@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import Favorites from './pages/favourites'
 
 function TopBar() {
+	const navigate = useNavigate()
 	const aref = useRef()
 	const { user, logout } = useUser()
 	const { query, setQuery, addImages, getAllImages } = useImages()
@@ -21,7 +22,6 @@ function TopBar() {
 		const res = await Search({ query: query, per_page: 20 })
 		addImages(query, res.data.results)
 	}
-
 
 	const searchBar = (
 		<>
@@ -33,7 +33,7 @@ function TopBar() {
 					value={query}
 					onKeyDown={(e) => {
 						if (e.key === 'Enter') {
-							onSearch();
+							onSearch()
 						}
 					}}
 					onChange={(e) => setQuery(e.target.value)}
@@ -42,16 +42,16 @@ function TopBar() {
 				/>
 				<Icons.Right />
 			</div>
-			<a
+			<button
 				ref={aref}
 				onClick={onSearch}
 				className='flex justify-center items-center h-full gap-3 px-5 border-2 border-gray-900 bg-black rounded-full text-white font-semibold'
 			>
 				<Icons.SearchIcon /> Search
-			</a>
+			</button>
 		</>
 	)
-	
+
 	if (user) {
 		return (
 			<div className='flex justify-between items-center w-full h-16 absolute top-0 px-10 font-semibold text-gray-400'>
@@ -59,32 +59,34 @@ function TopBar() {
 					{getAllImages()?.length > 0 ? searchBar : <></>}
 				</div>
 				<div className='flex gap-10 justify-center items-center'>
-					<a
-						href='/'
+					<button
+						onClick={() => navigate('/')}
 						className='hover:text-black hover:underline underline-offset-8 underline-2'
 					>
 						{user.email}
-					</a>
-					<a
-						href='/'
+					</button>
+					<button
+						onClick={() => navigate('/')}
 						className='hover:text-black hover:underline underline-offset-8 underline-2'
 					>
 						Search
-					</a>
-					<a
-						href='/favorites'
+					</button>
+					<button
+						onClick={() => navigate('/favorites')}
 						className='hover:text-black hover:underline underline-offset-8 underline-2'
 					>
 						Favorites
-					</a>
-					<a
-						onClick={logout}
-						href='/'
+					</button>
+					<button
+						onClick={() => {
+							logout()
+							navigate('/')
+						}}
 						className='flex gap-2 items-center justify-center bg-black text-white px-4 py-1 rounded-full drop-shadow-md'
 					>
 						Logout
 						<Icons.CharmChevronRight />
-					</a>
+					</button>
 				</div>
 			</div>
 		)
@@ -96,25 +98,25 @@ function TopBar() {
 				{getAllImages()?.length > 0 ? searchBar : <></>}
 			</div>
 			<div className='flex gap-10 justify-center items-center'>
-				<a
-					href='/'
+				<button
+					onClick={() => navigate('/')}
 					className='hover:text-black hover:underline underline-offset-8 underline-2'
 				>
 					Search
-				</a>
-				<a
-					href='/login'
+				</button>
+				<button
+					onClick={() => navigate('/login')}
 					className='hover:text-black hover:underline underline-offset-8 underline-2'
 				>
 					Login
-				</a>
-				<a
-					href='/signup'
+				</button>
+				<button
+					onClick={() => navigate('/signup')}
 					className='flex gap-2 items-center justify-center bg-black text-white px-4 py-1 rounded-full drop-shadow-md'
 				>
 					Sign Up
 					<Icons.CharmChevronRight />
-				</a>
+				</button>
 			</div>
 		</div>
 	)
@@ -223,14 +225,14 @@ const router = createBrowserRouter([
 function App() {
 	return (
 		<>
-			<TopBar />
-			<Router>
+			<Router basename='/'>
+				<TopBar />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/login' element={<Login />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path='/search' element={<Main />} />
-					<Route path='//favorites' element={<Favorites />} />
+					<Route path='/favorites' element={<Favorites />} />
 				</Routes>
 			</Router>
 		</>
