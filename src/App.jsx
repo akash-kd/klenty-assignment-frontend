@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Icons from './components/icons/Icons'
 import Login from './pages/auth/login'
 import Signup from './pages/auth/signup'
@@ -223,7 +224,15 @@ function App() {
 	return (
 		<>
 			<TopBar />
-			<RouterProvider router={router} />
+			<Router>
+				<Routes>
+					<Route path='/' element={<Home />} />
+					<Route path='/login' element={<Login />} />
+					<Route path='/signup' element={<Signup />} />
+					<Route path='/search' element={<Main />} />
+					<Route path='//favorites' element={<Favorites />} />
+				</Routes>
+			</Router>
 		</>
 	)
 }
