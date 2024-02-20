@@ -22,6 +22,7 @@ function TopBar() {
 		const res = await Search({ query: query, per_page: 20 })
 		addImages(query, res.data.results)
 	}
+	console.log(window.location.pathname)
 
 	const searchBar = (
 		<>
@@ -56,7 +57,12 @@ function TopBar() {
 		return (
 			<div className='flex justify-between items-center w-full h-16 absolute top-0 px-10 font-semibold text-gray-400'>
 				<div className='flex justify-center items-center h-10 gap-5'>
-					{getAllImages()?.length > 0 ? searchBar : <></>}
+					{getAllImages()?.length > 0 &&
+					window.location.pathname !== '/' ? (
+						searchBar
+					) : (
+						<></>
+					)}
 				</div>
 				<div className='flex gap-10 justify-center items-center'>
 					<button
@@ -95,7 +101,12 @@ function TopBar() {
 	return (
 		<div className='flex justify-between items-center w-full h-16 absolute top-0 px-10 gap-10 font-semibold text-gray-400'>
 			<div className='flex justify-center items-center h-10 gap-10'>
-				{getAllImages()?.length > 0 ? searchBar : <></>}
+				{getAllImages()?.length > 0 &&
+				window.location.pathname !== '/' ? (
+					searchBar
+				) : (
+					<></>
+				)}
 			</div>
 			<div className='flex gap-10 justify-center items-center'>
 				<button
